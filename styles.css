@@ -326,13 +326,13 @@ body {
     background: linear-gradient(180deg, var(--accent-hover), var(--accent-color));
 }
 
-/* ==========================================
-   Container
-   ========================================== */
-    max-width: 1200px;
+container{
+     max-width: 1200px;
     margin: 0 auto;
     padding: 0 var(--spacing-md);
+
 }
+
 
 section {
     padding: var(--spacing-xl) 0;
