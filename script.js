@@ -583,10 +583,21 @@ window.addEventListener('scroll', () => {
     scaleOnScroll();
 });
 
-// Trigger on page load
+// Initialize on page load
 window.addEventListener('load', () => {
     revealElements();
     scaleOnScroll();
+    advancedParallax();
+    depth3DScroll();
+    
+    // Animate decorative elements on load
+    setTimeout(() => {
+        document.querySelectorAll('.deco-circle, .gradient-orb, .float-shape').forEach((el, i) => {
+            setTimeout(() => {
+                el.style.opacity = '1';
+            }, i * 200);
+        });
+    }, 500);
 });
 
 // Add smooth parallax to map pins
