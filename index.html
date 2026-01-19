@@ -8,6 +8,31 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+    
+    <!-- Loading Screen -->
+    <div class="loading-screen">
+        <div class="loading-content">
+            <div class="loader-logo">
+                <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="loader-text">Sentinel AI</div>
+            <div class="loader-bar">
+                <div class="loader-progress"></div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating Emergency Button -->
+    <div class="floating-emergency-btn" title="Quick Emergency Request">
+        <i class="fas fa-exclamation-circle"></i>
+    </div>
+    
+    <!-- Scroll Progress Bar -->
+    <div class="scroll-progress-bar"></div>
+    
     <!-- Navigation Bar -->
     <nav class="navbar">
         <div class="container">
@@ -58,6 +83,23 @@
                 <p class="hero-subtitle">
                     AI-powered emergency prioritization to save lives. Fast response, intelligent routing, and real-time disaster management.
                 </p>
+                
+                <!-- Status Indicators -->
+                <div class="status-indicators">
+                    <div class="status-indicator">
+                        <span class="status-dot active"></span>
+                        <span>System Online</span>
+                    </div>
+                    <div class="status-indicator">
+                        <span class="status-dot processing"></span>
+                        <span>AI Processing</span>
+                    </div>
+                    <div class="status-indicator">
+                        <span class="status-dot monitoring"></span>
+                        <span>24/7 Monitoring</span>
+                    </div>
+                </div>
+                
                 <div class="hero-buttons">
                     <button class="btn btn-primary" onclick="scrollToSection('request')">
                         <i class="fas fa-exclamation-triangle"></i>

@@ -1,4 +1,131 @@
 // ==========================================
+// Custom Cursor
+// ==========================================
+
+const cursorDot = document.querySelector('.cursor-dot');
+const cursorOutline = document.querySelector('.cursor-outline');
+
+let cursorX = 0;
+let cursorY = 0;
+let outlineX = 0;
+let outlineY = 0;
+
+document.addEventListener('mousemove', (e) => {
+    cursorX = e.clientX;
+    cursorY = e.clientY;
+    
+    if (cursorDot) {
+        cursorDot.style.left = cursorX + 'px';
+        cursorDot.style.top = cursorY + 'px';
+    }
+});
+
+function animateCursorOutline() {
+    outlineX += (cursorX - outlineX) * 0.15;
+    outlineY += (cursorY - outlineY) * 0.15;
+    
+    if (cursorOutline) {
+        cursorOutline.style.left = outlineX + 'px';
+        cursorOutline.style.top = outlineY + 'px';
+    }
+    
+    requestAnimationFrame(animateCursorOutline);
+}
+
+animateCursorOutline();
+
+// Cursor hover effects
+document.querySelectorAll('a, button, .btn, .map-pin, .feature-card, input, select, textarea').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+        if (cursorOutline) cursorOutline.classList.add('hover');
+    });
+    
+    el.addEventListener('mouseleave', () => {
+        if (cursorOutline) cursorOutline.classList.remove('hover');
+    });
+});
+
+// ==========================================
+// Loading Screen
+// ==========================================
+
+window.addEventListener('load', () => {
+    setTimeout(() => {
+        const loadingScreen = document.querySelector('.loading-screen');
+        if (loadingScreen) {
+            loadingScreen.classList.add('hidden');
+        }
+    }, 1500);
+});
+
+// ==========================================
+// Scroll Progress Bar
+// ==========================================
+
+window.addEventListener('scroll', () => {
+    const progressBar = document.querySelector('.scroll-progress-bar');
+    if (progressBar) {
+        const windowHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+        const scrolled = (window.pageYOffset / windowHeight);
+        progressBar.style.transform = `scaleX(${scrolled})`;
+    }
+});
+
+// ==========================================
+// Floating Emergency Button
+// ==========================================
+
+const floatingBtn = document.querySelector('.floating-emergency-btn');
+if (floatingBtn) {
+    floatingBtn.addEventListener('click', () => {
+        scrollToSection('request');
+        setTimeout(() => {
+            document.getElementById('location').focus();
+        }, 500);
+    });
+    
+    // Hide on scroll down, show on scroll up
+    let lastScroll = 0;
+    window.addEventListener('scroll', () => {
+        const currentScroll = window.pageYOffset;
+        
+        if (currentScroll < 100) {
+            floatingBtn.style.transform = 'scale(0)';
+        } else if (currentScroll > lastScroll) {
+            floatingBtn.style.transform = 'scale(0.8)';
+        } else {
+            floatingBtn.style.transform = 'scale(1)';
+        }
+        
+        lastScroll = currentScroll;
+    });
+}
+
+// ==========================================
+// 3D Tilt Effect on Feature Cards
+// ==========================================
+
+document.querySelectorAll('.feature-card').forEach(card => {
+    card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        
+        const rotateX = (y - centerY) / 10;
+        const rotateY = (centerX - x) / 10;
+        
+        card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale(1.02)`;
+    });
+    
+    card.addEventListener('mouseleave', () => {
+        card.style.transform = 'perspective(1000px) rotateX(0) rotateY(0) scale(1)';
+    });
+});
+
+// ==========================================
 // Navigation & Scroll Effects
 // ==========================================
 
