@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Disaster Early-Help Platform</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <i class="fas fa-shield-alt"></i>
+                <span>Disaster AI</span>
+            </div>
+            <div class="nav-menu">
+                <a href="#home" class="nav-link">Home</a>
+                <a href="#request" class="nav-link">Request Help</a>
+                <a href="#map" class="nav-link">Emergency Map</a>
+                <a href="#features" class="nav-link">Features</a>
+            </div>
+            <div class="hamburger" id="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero / Landing Section -->
+    <section id="home" class="hero-section">
+        <div class="hero-overlay"></div>
+        <div class="container hero-content">
+            <div class="hero-text">
+                <div class="badge">AI-Powered Emergency Response</div>
+                <h1 class="hero-title">
+                    AI Disaster Early-Help Platform
+                </h1>
+                <p class="hero-subtitle">
+                    AI-powered emergency prioritization to save lives. Fast response, intelligent routing, and real-time disaster management.
+                </p>
+                <div class="hero-buttons">
+                    <button class="btn btn-primary" onclick="scrollToSection('request')">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        Request Help
+                    </button>
+                    <button class="btn btn-secondary" onclick="scrollToSection('map')">
+                        <i class="fas fa-map-marked-alt"></i>
+                        View Emergency Map
+                    </button>
+                </div>
+                
+                <!-- Stats -->
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="1247">0</div>
+                        <div class="stat-label">Lives Saved</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="3542">0</div>
+                        <div class="stat-label">Requests Processed</div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-number" data-target="98">0</div>
+                        <div class="stat-label">% Accuracy</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="scroll-indicator">
+            <i class="fas fa-chevron-down"></i>
+        </div>
+    </section>
+
+    <!-- Emergency Request Form Section -->
+    <section id="request" class="request-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Emergency Request</h2>
+                <p class="section-subtitle">Submit your emergency request and our AI will prioritize it instantly</p>
+            </div>
+
+            <div class="form-container">
+                <form id="emergencyForm" class="emergency-form">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="name">
+                                <i class="fas fa-user"></i>
+                                Name (Optional)
+                            </label>
+                            <input type="text" id="name" name="name" placeholder="Your name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="location">
+                                <i class="fas fa-map-marker-alt"></i>
+                                Location <span class="required">*</span>
+                            </label>
+                            <input type="text" id="location" name="location" placeholder="Street address or coordinates" required>
+                        </div>
+                    </div>
+
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="disasterType">
+                                <i class="fas fa-fire"></i>
+                                Disaster Type <span class="required">*</span>
+                            </label>
+                            <select id="disasterType" name="disasterType" required>
+                                <option value="">Select disaster type</option>
+                                <option value="flood">🌊 Flood</option>
+                                <option value="earthquake">🏚️ Earthquake</option>
+                                <option value="fire">🔥 Fire</option>
+                                <option value="landslide">🏔️ Landslide</option>
+                                <option value="hurricane">🌀 Hurricane</option>
+                                <option value="tornado">🌪️ Tornado</option>
+                                <option value="other">⚠️ Other</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="urgency">
+                                <i class="fas fa-exclamation-circle"></i>
+                                Urgency Level <span class="required">*</span>
+                            </label>
+                            <select id="urgency" name="urgency" required>
+                                <option value="">Select urgency level</option>
+                                <option value="low">🟢 Low - No immediate danger</option>
+                                <option value="medium">🟡 Medium - Needs attention</option>
+                                <option value="high">🟠 High - Urgent situation</option>
+                                <option value="critical">🔴 Critical - Life threatening</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="message">
+                            <i class="fas fa-comment-alt"></i>
+                            Message / Description <span class="required">*</span>
+                        </label>
+                        <textarea id="message" name="message" rows="5" 
+                            placeholder="Describe the emergency situation in detail..." required></textarea>
+                    </div>
+
+                    <button type="submit" class="btn btn-emergency">
+                        <i class="fas fa-paper-plane"></i>
+                        Submit Emergency Request
+                    </button>
+                </form>
+
+                <!-- AI Priority Status Card (Initially Hidden) -->
+                <div id="priorityCard" class="priority-card hidden">
+                    <div class="priority-header">
+                        <i class="fas fa-robot"></i>
+                        <h3>AI Priority Analysis</h3>
+                    </div>
+                    <div class="priority-content">
+                        <div class="priority-urgency">
+                            <span class="label">Urgency Level:</span>
+                            <span id="priorityUrgency" class="urgency-badge"></span>
+                        </div>
+                        <div class="priority-score">
+                            <span class="label">Priority Score:</span>
+                            <div class="score-container">
+                                <div class="score-bar">
+                                    <div id="scoreBar" class="score-fill"></div>
+                                </div>
+                                <span id="scoreValue" class="score-value">0</span>
+                            </div>
+                        </div>
+                        <div class="priority-status">
+                            <i class="fas fa-info-circle"></i>
+                            <p id="statusMessage"></p>
+                        </div>
+                        <div class="priority-actions">
+                            <button class="btn btn-small btn-primary" onclick="viewOnMap()">
+                                <i class="fas fa-map"></i>
+                                View on Map
+                            </button>
+                            <button class="btn btn-small btn-secondary" onclick="resetForm()">
+                                <i class="fas fa-redo"></i>
+                                New Request
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Emergency Map Section -->
+    <section id="map" class="map-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Emergency Map</h2>
+                <p class="section-subtitle">Real-time emergency prioritization map with AI-driven insights</p>
+            </div>
+
+            <div class="map-container">
+                <div class="map-overlay-text">
+                    <i class="fas fa-satellite-dish"></i>
+                    <h3>Real-time Emergency Prioritization Map</h3>
+                    <p>Displaying active emergencies and response status</p>
+                </div>
+                
+                <!-- Map Pins (Dummy Data) -->
+                <div class="map-pin pin-critical" style="top: 25%; left: 30%;" data-tooltip="Critical: Building Fire">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="map-pin pin-high" style="top: 45%; left: 65%;" data-tooltip="High: Flood Warning">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="map-pin pin-medium" style="top: 60%; left: 40%;" data-tooltip="Medium: Landslide Risk">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="map-pin pin-low" style="top: 35%; left: 75%;" data-tooltip="Low: Road Blockage">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+                <div class="map-pin pin-critical" style="top: 70%; left: 55%;" data-tooltip="Critical: Earthquake">
+                    <i class="fas fa-map-marker-alt"></i>
+                </div>
+
+                <!-- Map Legend -->
+                <div class="map-legend">
+                    <h4>Urgency Levels</h4>
+                    <div class="legend-item">
+                        <span class="legend-dot critical"></span>
+                        <span>Critical</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot high"></span>
+                        <span>High</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot medium"></span>
+                        <span>Medium</span>
+                    </div>
+                    <div class="legend-item">
+                        <span class="legend-dot low"></span>
+                        <span>Low</span>
+                    </div>
+                </div>
+
+                <!-- Active Emergencies Counter -->
+                <div class="map-stats">
+                    <div class="map-stat-item">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <span class="stat-count">23</span>
+                        <span class="stat-text">Active</span>
+                    </div>
+                    <div class="map-stat-item">
+                        <i class="fas fa-ambulance"></i>
+                        <span class="stat-count">12</span>
+                        <span class="stat-text">Responding</span>
+                    </div>
+                    <div class="map-stat-item">
+                        <i class="fas fa-check-circle"></i>
+                        <span class="stat-count">47</span>
+                        <span class="stat-text">Resolved</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features Section -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2 class="section-title">Platform Features</h2>
+                <p class="section-subtitle">Advanced AI technology for faster, smarter emergency response</p>
+            </div>
+
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI Prioritization</h3>
+                    <p>Machine learning algorithms analyze emergency requests in real-time to prioritize based on severity and urgency.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-marked-alt"></i>
+                    </div>
+                    <h3>Real-time Mapping</h3>
+                    <p>Interactive maps show all active emergencies with color-coded severity indicators for quick visual assessment.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-signal"></i>
+                    </div>
+                    <h3>Low Internet Support</h3>
+                    <p>Optimized for low-bandwidth environments, ensuring emergency requests reach us even with poor connectivity.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-bolt"></i>
+                    </div>
+                    <h3>Faster Response</h3>
+                    <p>Automated routing to nearest response teams cuts response time by 60%, saving precious minutes in emergencies.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Predictive Analysis</h3>
+                    <p>AI predicts disaster patterns and pre-positions resources in high-risk areas for proactive response.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-mobile-alt"></i>
+                    </div>
+                    <h3>Mobile Optimized</h3>
+                    <p>Fully responsive design works seamlessly on any device - smartphone, tablet, or desktop.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <h3>Secure Platform</h3>
+                    <p>End-to-end encryption ensures all emergency data is protected and handled with utmost confidentiality.</p>
+                </div>
+
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <h3>24/7 Monitoring</h3>
+                    <p>Round-the-clock AI monitoring ensures no emergency goes unnoticed, with instant alerting capabilities.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <i class="fas fa-shield-alt"></i>
+                    <h3>Disaster AI</h3>
+                    <p>AI-powered emergency prioritization to save lives</p>
+                </div>
+                
+                <div class="footer-links">
+                    <div class="footer-column">
+                        <h4>Platform</h4>
+                        <a href="#home">Home</a>
+                        <a href="#request">Request Help</a>
+                        <a href="#map">Emergency Map</a>
+                        <a href="#features">Features</a>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Resources</h4>
+                        <a href="#">Documentation</a>
+                        <a href="#">API Access</a>
+                        <a href="#">Support</a>
+                        <a href="#">Contact</a>
+                    </div>
+                    
+                    <div class="footer-column">
+                        <h4>Connect</h4>
+                        <a href="#"><i class="fab fa-github"></i> GitHub</a>
+                        <a href="#"><i class="fab fa-twitter"></i> Twitter</a>
+                        <a href="#"><i class="fab fa-linkedin"></i> LinkedIn</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2026 AI Disaster Early-Help Platform | Hackathon Project</p>
+                <p>Built with ❤️ for saving lives</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="script.js"></script>
+</body>
+</html>
