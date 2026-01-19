@@ -363,11 +363,129 @@ document.querySelectorAll('.feature-card').forEach(card => {
 });
 
 // ==========================================
+// Scroll Animations & Parallax Effects
+// ==========================================
+
+// Parallax effect on hero section
+window.addEventListener('scroll', () => {
+    const scrolled = window.pageYOffset;
+    const heroContent = document.querySelector('.hero-content');
+    const particles = document.querySelector('.particles-container');
+    const waves = document.querySelector('.animated-waves');
+    
+    if (heroContent) {
+        heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
+        heroContent.style.opacity = 1 - (scrolled / 600);
+    }
+    
+    if (particles) {
+        particles.style.transform = `translateY(${scrolled * 0.3}px)`;
+    }
+    
+    if (waves) {
+        waves.style.transform = `translateY(${scrolled * 0.4}px)`;
+    }
+});
+
+// Scroll reveal animations
+const revealElements = () => {
+    const reveals = document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale, .section-header, .feature-card');
+    
+    reveals.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementBottom = element.getBoundingClientRect().bottom;
+        const windowHeight = window.innerHeight;
+        
+        if (elementTop < windowHeight - 100 && elementBottom > 0) {
+            element.classList.add('active', 'visible', 'scaled');
+        }
+    });
+};
+
+// Smooth scale on scroll for sections
+const scaleOnScroll = () => {
+    const sections = document.querySelectorAll('section');
+    
+    sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        const windowHeight = window.innerHeight;
+        
+        if (rect.top < windowHeight && rect.bottom > 0) {
+            const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
+            const scale = 0.95 + (progress * 0.05);
+            section.style.transform = `scale(${Math.min(scale, 1)})`;
+        }
+    });
+};
+
+// Initialize scroll animations
+window.addEventListener('scroll', () => {
+    revealElements();
+    scaleOnScroll();
+});
+
+// Trigger on page load
+window.addEventListener('load', () => {
+    revealElements();
+    scaleOnScroll();
+});
+
+// Add smooth parallax to map pins
+window.addEventListener('scroll', () => {
+    const mapSection = document.getElementById('map');
+    if (mapSection) {
+        const rect = mapSection.getBoundingClientRect();
+        if (rect.top < window.innerHeight && rect.bottom > 0) {
+            const pins = document.querySelectorAll('.map-pin');
+            pins.forEach((pin, index) => {
+                const speed = 0.5 + (index * 0.1);
+                const yPos = (rect.top - window.innerHeight) * speed * 0.1;
+                pin.style.transform = `translateY(${yPos}px)`;
+            });
+        }
+    }
+});
+
+// Smooth mouse parallax on hero
+let mouseX = 0;
+let mouseY = 0;
+let currentX = 0;
+let currentY = 0;
+
+document.addEventListener('mousemove', (e) => {
+    mouseX = (e.clientX / window.innerWidth) - 0.5;
+    mouseY = (e.clientY / window.innerHeight) - 0.5;
+});
+
+function animateParallax() {
+    currentX += (mouseX - currentX) * 0.1;
+    currentY += (mouseY - currentY) * 0.1;
+    
+    const heroSection = document.querySelector('.hero-section');
+    if (heroSection && window.pageYOffset < window.innerHeight) {
+        const particles = document.querySelector('.particles-container');
+        const waves = document.querySelector('.animated-waves');
+        
+        if (particles) {
+            particles.style.transform = `translate(${currentX * 20}px, ${currentY * 20}px)`;
+        }
+        
+        if (waves) {
+            waves.style.transform = `translate(${currentX * -15}px, ${currentY * -15}px)`;
+        }
+    }
+    
+    requestAnimationFrame(animateParallax);
+}
+
+animateParallax();
+
+// ==========================================
 // Initialize on Page Load
 // ==========================================
 
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('🚨 AI Disaster Early-Help Platform Initialized');
+    console.log('🚨 Sentinel AI Platform Initialized');
     console.log('Platform ready to receive emergency requests');
     
     // Add pulse animation to emergency icons

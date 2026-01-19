@@ -209,6 +209,12 @@ section {
     position: relative;
     z-index: 2;
     text-align: center;
+    transition: transform 0.5s ease-out;
+}
+
+.hero-content.scrolled {
+    transform: translateY(-20px);
+    opacity: 0.8;
 }
 
 .badge {
@@ -526,37 +532,10 @@ section {
     }
 }
 
-/* Typing Animation for Hero Title */
+/* Smooth Hero Title Animation */
 .hero-title {
-    overflow: hidden;
-    border-right: 3px solid var(--accent-color);
-    white-space: nowrap;
-    animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite, fadeInUp 1s ease;
-    display: inline-block;
-}
-
-@keyframes typing {
-    from {
-        width: 0;
-    }
-    to {
-        width: 100%;
-    }
-}
-
-@keyframes blink-caret {
-    from, to {
-        border-color: transparent;
-    }
-    50% {
-        border-color: var(--accent-color);
-    }
-}
-
-/* Remove typing animation after completion */
-.hero-title {
-    animation: typing 3s steps(40, end) forwards, blink-caret 0.75s step-end 4s 4, fadeInUp 1s ease;
-    animation-fill-mode: forwards;
+    animation: fadeInUp 1s ease;
+    line-height: 1.2;
 }
 
 /* Scan Line Effect */
@@ -650,6 +629,14 @@ section {
 .section-header {
     text-align: center;
     margin-bottom: var(--spacing-xl);
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 0.8s ease;
+}
+
+.section-header.visible {
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .section-title {
@@ -672,6 +659,28 @@ section {
 
 .request-section {
     background: linear-gradient(180deg, var(--bg-dark) 0%, var(--primary-color) 100%);
+    position: relative;
+    overflow: hidden;
+}
+
+.request-section::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(220, 20, 60, 0.05) 0%, transparent 70%);
+    animation: rotate-gradient 20s linear infinite;
+}
+
+@keyframes rotate-gradient {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .form-container {
@@ -680,11 +689,19 @@ section {
 }
 
 .emergency-form {
-    background: var(--bg-card);
+    background: rgba(26, 47, 90, 0.8);
+    backdrop-filter: blur(10px);
     padding: var(--spacing-xl);
     border-radius: var(--radius-lg);
     box-shadow: 0 10px 40px var(--shadow-lg);
     border: 1px solid var(--border-color);
+    transition: all 0.5s ease;
+}
+
+.emergency-form:hover {
+    background: rgba(26, 47, 90, 0.9);
+    transform: translateY(-5px);
+    box-shadow: 0 15px 50px var(--shadow-lg);
 }
 
 .form-row {
@@ -743,12 +760,13 @@ section {
    ========================================== */
 
 .priority-card {
-    background: var(--bg-card);
+    background: rgba(26, 47, 90, 0.85);
+    backdrop-filter: blur(15px);
     padding: var(--spacing-xl);
     border-radius: var(--radius-lg);
     margin-top: var(--spacing-lg);
     border: 2px solid var(--accent-color);
-    box-shadow: 0 10px 40px var(--shadow-lg);
+    box-shadow: 0 10px 40px var(--shadow-lg), 0 0 30px rgba(220, 20, 60, 0.2);
     animation: slideInUp 0.5s ease;
 }
 
@@ -1389,6 +1407,102 @@ section {
     .map-overlay-text i {
         font-size: 2.5rem;
     }
+}
+
+/* ==========================================
+   Scroll Reveal Animations
+   ========================================== */
+
+.scroll-reveal {
+    opacity: 0;
+    transform: translateY(50px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scroll-reveal.active {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.scroll-reveal-left {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scroll-reveal-left.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-reveal-right {
+    opacity: 0;
+    transform: translateX(50px);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scroll-reveal-right.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.scroll-reveal-scale {
+    opacity: 0;
+    transform: scale(0.8);
+    transition: all 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scroll-reveal-scale.active {
+    opacity: 1;
+    transform: scale(1);
+}
+
+/* Stagger animation delays */
+.scroll-reveal:nth-child(1) { transition-delay: 0.1s; }
+.scroll-reveal:nth-child(2) { transition-delay: 0.2s; }
+.scroll-reveal:nth-child(3) { transition-delay: 0.3s; }
+.scroll-reveal:nth-child(4) { transition-delay: 0.4s; }
+.scroll-reveal:nth-child(5) { transition-delay: 0.5s; }
+.scroll-reveal:nth-child(6) { transition-delay: 0.6s; }
+.scroll-reveal:nth-child(7) { transition-delay: 0.7s; }
+.scroll-reveal:nth-child(8) { transition-delay: 0.8s; }
+
+/* Parallax Effect */
+.parallax-layer {
+    transition: transform 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* Blur on scroll */
+.blur-on-scroll {
+    transition: filter 0.3s ease;
+}
+
+.blur-on-scroll.blurred {
+    filter: blur(3px);
+}
+
+/* Section entrance with backdrop blur */
+.section-entrance {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: all 1s ease;
+}
+
+.section-entrance.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Smooth scale on scroll */
+.scale-on-scroll {
+    transform: scale(0.95);
+    opacity: 0.7;
+    transition: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.scale-on-scroll.scaled {
+    transform: scale(1);
+    opacity: 1;
 }
 
 /* ==========================================
