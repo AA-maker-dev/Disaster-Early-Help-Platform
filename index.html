@@ -208,43 +208,44 @@
                         Submit Emergency Request
                     </button>
                 </form>
+            </div>
 
-                <!-- AI Priority Status Card (Initially Hidden) -->
-                <div id="priorityCard" class="priority-card hidden">
-                    <div class="priority-header">
-                        <i class="fas fa-robot"></i>
-                        <h3>AI Priority Analysis</h3>
+            <!-- AI Priority Status Card (Initially Hidden) -->
+            <div id="priorityCard" class="priority-card hidden">
+                <div class="priority-header">
+                    <i class="fas fa-robot"></i>
+                    <h3>AI Priority Analysis</h3>
+                </div>
+                <div class="priority-content">
+                    <div class="priority-urgency">
+                        <span class="label">Urgency Level:</span>
+                        <span id="priorityUrgency" class="urgency-badge"></span>
                     </div>
-                    <div class="priority-content">
-                        <div class="priority-urgency">
-                            <span class="label">Urgency Level:</span>
-                            <span id="priorityUrgency" class="urgency-badge"></span>
-                        </div>
-                        <div class="priority-score">
-                            <span class="label">Priority Score:</span>
-                            <div class="score-container">
-                                <div class="score-bar">
-                                    <div id="scoreBar" class="score-fill"></div>
-                                </div>
-                                <span id="scoreValue" class="score-value">0</span>
+                    <div class="priority-score">
+                        <span class="label">Priority Score:</span>
+                        <div class="score-container">
+                            <div class="score-bar">
+                                <div id="scoreBar" class="score-fill"></div>
                             </div>
+                            <span id="scoreValue" class="score-value">0</span>
                         </div>
-                        <div class="priority-status">
-                            <i class="fas fa-info-circle"></i>
-                            <p id="statusMessage"></p>
-                        </div>
-                        <div class="priority-actions">
-                            <button class="btn btn-small btn-primary" onclick="viewOnMap()">
-                                <i class="fas fa-map"></i>
-                                View on Map
-                            </button>
-                            <button class="btn btn-small btn-secondary" onclick="resetForm()">
-                                <i class="fas fa-redo"></i>
-                                New Request
-                            </button>
-                        </div>
+                    </div>
+                    <div class="priority-status">
+                        <i class="fas fa-info-circle"></i>
+                        <p id="statusMessage"></p>
+                    </div>
+                    <div class="priority-actions">
+                        <button class="btn btn-small btn-primary" onclick="viewOnMap()">
+                            <i class="fas fa-map"></i>
+                            View on Map
+                        </button>
+                        <button class="btn btn-small btn-secondary" onclick="resetForm()">
+                            <i class="fas fa-redo"></i>
+                            New Request
+                        </button>
                     </div>
                 </div>
+            </div>
             </div>
         </div>
     </section>

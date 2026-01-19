@@ -1084,11 +1084,22 @@ section {
     opacity: 0;
     transform: translateY(30px);
     transition: all 0.8s ease;
+    position: relative;
+    z-index: 1;
+    pointer-events: auto !important;
+    visibility: visible !important;
 }
 
 .section-header.visible {
     opacity: 1;
     transform: translateY(0);
+}
+
+/* Request section header should be visible immediately */
+.request-section .section-header {
+    opacity: 1 !important;
+    transform: translateY(0) !important;
+    visibility: visible !important;
 }
 
 .section-title {
@@ -1112,7 +1123,9 @@ section {
 .request-section {
     background: linear-gradient(180deg, var(--bg-dark) 0%, var(--primary-color) 100%);
     position: relative;
-    overflow: hidden;
+    overflow: visible;
+    padding: var(--spacing-xl) 0;
+    scroll-margin-top: 100px;
 }
 
 .request-section::before {
@@ -1124,6 +1137,8 @@ section {
     height: 200%;
     background: radial-gradient(circle, rgba(220, 20, 60, 0.05) 0%, transparent 70%);
     animation: rotate-gradient 20s linear infinite;
+    pointer-events: none;
+    z-index: 0;
 }
 
 @keyframes rotate-gradient {
@@ -1138,6 +1153,8 @@ section {
 .form-container {
     max-width: 900px;
     margin: 0 auto;
+    position: relative;
+    z-index: 1;
 }
 
 .emergency-form {
@@ -1217,10 +1234,14 @@ section {
     backdrop-filter: blur(15px);
     padding: var(--spacing-xl);
     border-radius: var(--radius-lg);
-    margin-top: var(--spacing-lg);
+    margin: var(--spacing-xl) auto 0;
+    max-width: 900px;
     border: 2px solid var(--accent-color);
     box-shadow: 0 10px 40px var(--shadow-lg), 0 0 30px rgba(220, 20, 60, 0.2);
     animation: slideInUp 0.5s ease;
+    position: relative;
+    z-index: 2;
+    scroll-margin-top: 150px;
 }
 
 .priority-card.hidden {

@@ -455,9 +455,9 @@ emergencyForm.addEventListener('submit', (e) => {
         // Show success notification
         showNotification('Emergency request submitted successfully!', 'success');
         
-        // Scroll to priority card
+        // Scroll to priority card to show the AI analysis
         setTimeout(() => {
-            priorityCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            priorityCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         }, 100);
     }, 1500);
 });
