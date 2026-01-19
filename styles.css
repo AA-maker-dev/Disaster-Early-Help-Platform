@@ -329,13 +329,15 @@ body {
     background: linear-gradient(180deg, var(--accent-hover), var(--accent-color));
 }
 
-container{
-     max-width: 1200px;
+/* ==========================================
+   Container
+   ========================================== */
+
+.container {
+    max-width: 1200px;
     margin: 0 auto;
-    padding: 0 var(--spacing-md);
-
+    padding: 0 var(--spacing-lg);
 }
-
 
 section {
     padding: var(--spacing-xl) 0;
@@ -386,6 +388,7 @@ section {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    padding: 0 var(--spacing-xl);
 }
 
 .nav-brand {
@@ -1614,6 +1617,14 @@ section {
    ========================================== */
 
 @media (max-width: 992px) {
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+    
+    .navbar .container {
+        padding: 0 var(--spacing-lg);
+    }
+    
     .hero-title {
         font-size: 2.5rem;
     }
@@ -1639,6 +1650,14 @@ section {
     .cursor-dot,
     .cursor-outline {
         display: none;
+    }
+    
+    .container {
+        padding: 0 var(--spacing-md);
+    }
+    
+    .navbar .container {
+        padding: 0 var(--spacing-md);
     }
     
     .nav-menu {
