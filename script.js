@@ -1,4 +1,21 @@
 // ==========================================
+// Performance Optimization - Throttle Function
+// ==========================================
+
+function throttle(func, limit) {
+    let inThrottle;
+    return function() {
+        const args = arguments;
+        const context = this;
+        if (!inThrottle) {
+            func.apply(context, args);
+            inThrottle = true;
+            setTimeout(() => inThrottle = false, limit);
+        }
+    }
+}
+
+// ==========================================
 // Custom Cursor
 // ==========================================
 
@@ -21,8 +38,9 @@ document.addEventListener('mousemove', (e) => {
 });
 
 function animateCursorOutline() {
-    outlineX += (cursorX - outlineX) * 0.15;
-    outlineY += (cursorY - outlineY) * 0.15;
+    const ease = 0.15;
+    outlineX += (cursorX - outlineX) * ease;
+    outlineY += (cursorY - outlineY) * ease;
     
     if (cursorOutline) {
         cursorOutline.style.left = outlineX + 'px';
@@ -490,32 +508,46 @@ document.querySelectorAll('.feature-card').forEach(card => {
 });
 
 // ==========================================
-// Scroll Animations & Parallax Effects
+// Scroll Animations & Parallax Effects (Optimized)
 // ==========================================
 
-// Parallax effect on hero section
-window.addEventListener('scroll', () => {
+let ticking = false;
+let lastScrollY = 0;
+
+const handleScroll = () => {
     const scrolled = window.pageYOffset;
     const heroContent = document.querySelector('.hero-content');
     const particles = document.querySelector('.particles-container');
     const waves = document.querySelector('.animated-waves');
     
-    if (heroContent) {
-        heroContent.style.transform = `translateY(${scrolled * 0.5}px)`;
-        heroContent.style.opacity = 1 - (scrolled / 600);
+    if (scrolled < window.innerHeight) {
+        if (heroContent) {
+            heroContent.style.transform = `translate3d(0, ${scrolled * 0.4}px, 0)`;
+            heroContent.style.opacity = Math.max(0, 1 - (scrolled / 600));
+        }
+        
+        if (particles) {
+            particles.style.transform = `translate3d(0, ${scrolled * 0.2}px, 0)`;
+        }
+        
+        if (waves) {
+            waves.style.transform = `translate3d(0, ${scrolled * 0.3}px, 0)`;
+        }
     }
     
-    if (particles) {
-        particles.style.transform = `translateY(${scrolled * 0.3}px)`;
-    }
-    
-    if (waves) {
-        waves.style.transform = `translateY(${scrolled * 0.4}px)`;
+    lastScrollY = scrolled;
+    ticking = false;
+};
+
+window.addEventListener('scroll', () => {
+    if (!ticking) {
+        requestAnimationFrame(handleScroll);
+        ticking = true;
     }
 });
 
-// Scroll reveal animations
-const revealElements = () => {
+// Scroll reveal animations (throttled)
+const revealElements = throttle(() => {
     const reveals = document.querySelectorAll('.scroll-reveal, .scroll-reveal-left, .scroll-reveal-right, .scroll-reveal-scale, .section-header, .feature-card');
     
     reveals.forEach(element => {
@@ -527,10 +559,10 @@ const revealElements = () => {
             element.classList.add('active', 'visible', 'scaled');
         }
     });
-};
+}, 100);
 
-// Smooth scale on scroll for sections
-const scaleOnScroll = () => {
+// Smooth scale on scroll for sections (throttled)
+const scaleOnScroll = throttle(() => {
     const sections = document.querySelectorAll('section');
     
     sections.forEach(section => {
@@ -539,11 +571,11 @@ const scaleOnScroll = () => {
         
         if (rect.top < windowHeight && rect.bottom > 0) {
             const progress = (windowHeight - rect.top) / (windowHeight + rect.height);
-            const scale = 0.95 + (progress * 0.05);
+            const scale = 0.98 + (progress * 0.02);
             section.style.transform = `scale(${Math.min(scale, 1)})`;
         }
     });
-};
+}, 100);
 
 // Initialize scroll animations
 window.addEventListener('scroll', () => {
@@ -573,20 +605,20 @@ window.addEventListener('scroll', () => {
     }
 });
 
-// Smooth mouse parallax on hero
+// Smooth mouse parallax on hero (optimized)
 let mouseX = 0;
 let mouseY = 0;
 let currentX = 0;
 let currentY = 0;
 
-document.addEventListener('mousemove', (e) => {
+document.addEventListener('mousemove', throttle((e) => {
     mouseX = (e.clientX / window.innerWidth) - 0.5;
     mouseY = (e.clientY / window.innerHeight) - 0.5;
-});
+}, 50));
 
 function animateParallax() {
-    currentX += (mouseX - currentX) * 0.1;
-    currentY += (mouseY - currentY) * 0.1;
+    currentX += (mouseX - currentX) * 0.08;
+    currentY += (mouseY - currentY) * 0.08;
     
     const heroSection = document.querySelector('.hero-section');
     if (heroSection && window.pageYOffset < window.innerHeight) {
@@ -594,11 +626,11 @@ function animateParallax() {
         const waves = document.querySelector('.animated-waves');
         
         if (particles) {
-            particles.style.transform = `translate(${currentX * 20}px, ${currentY * 20}px)`;
+            particles.style.transform = `translate3d(${currentX * 30}px, ${currentY * 30}px, 0)`;
         }
         
         if (waves) {
-            waves.style.transform = `translate(${currentX * -15}px, ${currentY * -15}px)`;
+            waves.style.transform = `translate3d(${currentX * -20}px, ${currentY * -20}px, 0)`;
         }
     }
     

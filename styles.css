@@ -63,6 +63,29 @@ body {
     line-height: 1.6;
     overflow-x: hidden;
     cursor: none;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+/* Performance optimizations */
+* {
+    will-change: auto;
+}
+
+.hero-section,
+.particles-container,
+.animated-waves,
+.hero-content {
+    will-change: transform;
+    transform: translateZ(0);
+    backface-visibility: hidden;
+}
+
+.feature-card,
+.map-pin,
+.scroll-reveal {
+    will-change: transform, opacity;
+    transform: translateZ(0);
 }
 
 /* ==========================================
@@ -70,36 +93,67 @@ body {
    ========================================== */
 
 .cursor-dot {
-    width: 8px;
-    height: 8px;
+    width: 6px;
+    height: 6px;
     background: var(--accent-color);
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
     z-index: 10001;
     transform: translate(-50%, -50%);
-    transition: transform 0.15s ease, opacity 0.3s ease;
-    mix-blend-mode: difference;
+    transition: transform 0.1s ease;
+    box-shadow: 0 0 10px var(--accent-color);
 }
 
 .cursor-outline {
-    width: 40px;
-    height: 40px;
+    width: 30px;
+    height: 30px;
     border: 2px solid var(--accent-color);
     border-radius: 50%;
     position: fixed;
     pointer-events: none;
     z-index: 10000;
     transform: translate(-50%, -50%);
-    transition: all 0.2s ease;
-    mix-blend-mode: difference;
+    transition: all 0.15s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+.cursor-outline::before,
+.cursor-outline::after {
+    content: '';
+    position: absolute;
+    background: var(--accent-color);
+}
+
+.cursor-outline::before {
+    width: 12px;
+    height: 2px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.cursor-outline::after {
+    width: 2px;
+    height: 12px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
 }
 
 .cursor-outline.hover {
-    width: 60px;
-    height: 60px;
-    background: rgba(220, 20, 60, 0.1);
-    transform: translate(-50%, -50%) scale(1);
+    width: 50px;
+    height: 50px;
+    border-color: var(--accent-color);
+    background: rgba(220, 20, 60, 0.05);
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.cursor-outline.hover::before {
+    width: 16px;
+}
+
+.cursor-outline.hover::after {
+    height: 16px;
 }
 
 /* ==========================================
@@ -465,6 +519,8 @@ section {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
     overflow: hidden;
     padding-top: 80px;
+    perspective: 1000px;
+    transform-style: preserve-3d;
 }
 
 .hero-section::before {
@@ -847,6 +903,112 @@ section {
     }
     100% {
         transform: translateY(100vh);
+    }
+}
+
+/* ==========================================
+   Enhanced 3D & Depth Effects
+   ========================================== */
+
+.section-3d {
+    transform-style: preserve-3d;
+    perspective: 1000px;
+}
+
+.map-container {
+    position: relative;
+    height: 600px;
+    background: linear-gradient(135deg, var(--secondary-color) 0%, var(--light-blue) 100%);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    box-shadow: 0 10px 40px var(--shadow-lg);
+    border: 2px solid var(--border-color);
+    transform-style: preserve-3d;
+    transition: transform 0.3s ease;
+}
+
+.map-container:hover {
+    transform: translateZ(10px);
+}
+
+.emergency-form {
+    background: rgba(26, 47, 90, 0.8);
+    backdrop-filter: blur(10px);
+    padding: var(--spacing-xl);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 10px 40px var(--shadow-lg);
+    border: 1px solid var(--border-color);
+    transition: all 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    transform-style: preserve-3d;
+}
+
+.emergency-form:hover {
+    background: rgba(26, 47, 90, 0.9);
+    transform: translateY(-8px) translateZ(20px);
+    box-shadow: 0 20px 60px var(--shadow-lg), 0 0 40px rgba(220, 20, 60, 0.1);
+}
+
+/* Floating animation for stats */
+.stat-item {
+    text-align: center;
+    animation: stat-entrance 0.8s ease backwards, float-stat 4s ease-in-out infinite;
+}
+
+@keyframes float-stat {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Layered parallax sections */
+.request-section,
+.map-section,
+.features-section {
+    position: relative;
+    transform-style: preserve-3d;
+}
+
+.request-section::before,
+.map-section::before,
+.features-section::before {
+    transform: translateZ(-50px) scale(1.1);
+}
+
+/* Text glow effect on hover */
+.hero-title {
+    animation: fadeInUp 1s ease;
+    line-height: 1.2;
+    transition: all 0.3s ease;
+}
+
+.hero-title:hover {
+    text-shadow: 0 0 20px rgba(220, 20, 60, 0.5),
+                 0 0 40px rgba(220, 20, 60, 0.3);
+}
+
+/* Badge pulse animation */
+.badge {
+    display: inline-block;
+    background: rgba(220, 20, 60, 0.2);
+    border: 1px solid var(--accent-color);
+    color: var(--accent-color);
+    padding: var(--spacing-xs) var(--spacing-md);
+    border-radius: 50px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    margin-bottom: var(--spacing-md);
+    animation: fadeInDown 0.8s ease, badge-pulse 3s ease-in-out infinite;
+}
+
+@keyframes badge-pulse {
+    0%, 100% {
+        box-shadow: 0 0 0 0 rgba(220, 20, 60, 0.7);
+    }
+    50% {
+        box-shadow: 0 0 0 10px rgba(220, 20, 60, 0);
     }
 }
 
