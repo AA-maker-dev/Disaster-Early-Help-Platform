@@ -263,6 +263,30 @@ section {
 
 .stat-item {
     text-align: center;
+    animation: stat-entrance 0.8s ease backwards;
+}
+
+.stat-item:nth-child(1) {
+    animation-delay: 1.6s;
+}
+
+.stat-item:nth-child(2) {
+    animation-delay: 1.8s;
+}
+
+.stat-item:nth-child(3) {
+    animation-delay: 2s;
+}
+
+@keyframes stat-entrance {
+    from {
+        opacity: 0;
+        transform: translateY(30px) scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .stat-number {
@@ -313,6 +337,247 @@ section {
     to {
         opacity: 1;
         transform: translateY(0);
+    }
+}
+
+/* ==========================================
+   Advanced Animations
+   ========================================== */
+
+/* Floating Particles */
+.particles-container {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.particle {
+    position: absolute;
+    width: 4px;
+    height: 4px;
+    background: rgba(220, 20, 60, 0.6);
+    border-radius: 50%;
+    box-shadow: 0 0 10px rgba(220, 20, 60, 0.8);
+    animation: float 20s infinite;
+}
+
+.particle:nth-child(1) {
+    left: 10%;
+    animation-delay: 0s;
+    animation-duration: 15s;
+}
+
+.particle:nth-child(2) {
+    left: 20%;
+    animation-delay: 2s;
+    animation-duration: 18s;
+}
+
+.particle:nth-child(3) {
+    left: 30%;
+    animation-delay: 4s;
+    animation-duration: 20s;
+}
+
+.particle:nth-child(4) {
+    left: 40%;
+    animation-delay: 1s;
+    animation-duration: 22s;
+}
+
+.particle:nth-child(5) {
+    left: 50%;
+    animation-delay: 3s;
+    animation-duration: 16s;
+}
+
+.particle:nth-child(6) {
+    left: 60%;
+    animation-delay: 5s;
+    animation-duration: 19s;
+}
+
+.particle:nth-child(7) {
+    left: 70%;
+    animation-delay: 2.5s;
+    animation-duration: 21s;
+}
+
+.particle:nth-child(8) {
+    left: 80%;
+    animation-delay: 4.5s;
+    animation-duration: 17s;
+}
+
+.particle:nth-child(9) {
+    left: 90%;
+    animation-delay: 1.5s;
+    animation-duration: 23s;
+}
+
+.particle:nth-child(10) {
+    left: 95%;
+    animation-delay: 6s;
+    animation-duration: 14s;
+}
+
+@keyframes float {
+    0% {
+        transform: translateY(100vh) scale(0);
+        opacity: 0;
+    }
+    10% {
+        opacity: 1;
+    }
+    90% {
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-100vh) scale(1);
+        opacity: 0;
+    }
+}
+
+/* Animated Wave Background */
+.animated-waves {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: 1;
+}
+
+.wave {
+    position: absolute;
+    width: 200%;
+    height: 200%;
+    border-radius: 40%;
+    opacity: 0.1;
+}
+
+.wave1 {
+    background: radial-gradient(circle, rgba(220, 20, 60, 0.4) 0%, transparent 70%);
+    animation: wave-animation 15s infinite linear;
+    top: -50%;
+    left: -50%;
+}
+
+.wave2 {
+    background: radial-gradient(circle, rgba(45, 74, 124, 0.4) 0%, transparent 70%);
+    animation: wave-animation 20s infinite linear reverse;
+    bottom: -50%;
+    right: -50%;
+}
+
+.wave3 {
+    background: radial-gradient(circle, rgba(220, 20, 60, 0.3) 0%, transparent 70%);
+    animation: wave-animation 25s infinite linear;
+    top: -30%;
+    right: -30%;
+}
+
+@keyframes wave-animation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+/* Glowing Button Effect */
+.btn-primary {
+    position: relative;
+    overflow: hidden;
+}
+
+.btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s;
+}
+
+.btn-primary:hover::before {
+    width: 300px;
+    height: 300px;
+}
+
+.btn-emergency {
+    position: relative;
+    overflow: hidden;
+    animation: emergency-pulse 2s infinite;
+}
+
+@keyframes emergency-pulse {
+    0%, 100% {
+        box-shadow: 0 8px 25px rgba(220, 20, 60, 0.5);
+    }
+    50% {
+        box-shadow: 0 8px 35px rgba(220, 20, 60, 0.8), 0 0 20px rgba(220, 20, 60, 0.5);
+    }
+}
+
+/* Typing Animation for Hero Title */
+.hero-title {
+    overflow: hidden;
+    border-right: 3px solid var(--accent-color);
+    white-space: nowrap;
+    animation: typing 3s steps(40, end), blink-caret 0.75s step-end infinite, fadeInUp 1s ease;
+    display: inline-block;
+}
+
+@keyframes typing {
+    from {
+        width: 0;
+    }
+    to {
+        width: 100%;
+    }
+}
+
+@keyframes blink-caret {
+    from, to {
+        border-color: transparent;
+    }
+    50% {
+        border-color: var(--accent-color);
+    }
+}
+
+/* Remove typing animation after completion */
+.hero-title {
+    animation: typing 3s steps(40, end) forwards, blink-caret 0.75s step-end 4s 4, fadeInUp 1s ease;
+    animation-fill-mode: forwards;
+}
+
+/* Scan Line Effect */
+.hero-section::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(220, 20, 60, 0.8), transparent);
+    animation: scan 3s linear infinite;
+    z-index: 3;
+}
+
+@keyframes scan {
+    0% {
+        transform: translateY(0);
+    }
+    100% {
+        transform: translateY(100vh);
     }
 }
 
@@ -711,22 +976,41 @@ section {
 
 .pin-critical {
     color: var(--critical);
+    animation: pinDrop 0.5s ease, neon-pulse 2s infinite;
     animation-delay: 0.1s;
+    filter: drop-shadow(0 0 10px var(--critical));
 }
 
 .pin-high {
     color: var(--high);
+    animation: pinDrop 0.5s ease, neon-pulse 2s infinite;
     animation-delay: 0.2s;
+    filter: drop-shadow(0 0 8px var(--high));
 }
 
 .pin-medium {
     color: var(--medium);
+    animation: pinDrop 0.5s ease, neon-pulse 2s infinite;
     animation-delay: 0.3s;
+    filter: drop-shadow(0 0 6px var(--medium));
 }
 
 .pin-low {
     color: var(--low);
+    animation: pinDrop 0.5s ease, neon-pulse 2s infinite;
     animation-delay: 0.4s;
+    filter: drop-shadow(0 0 5px var(--low));
+}
+
+@keyframes neon-pulse {
+    0%, 100% {
+        filter: drop-shadow(0 0 5px currentColor) drop-shadow(0 0 10px currentColor);
+        transform: scale(1);
+    }
+    50% {
+        filter: drop-shadow(0 0 10px currentColor) drop-shadow(0 0 20px currentColor);
+        transform: scale(1.05);
+    }
 }
 
 .map-legend {
@@ -836,6 +1120,29 @@ section {
     border: 1px solid var(--border-color);
     transition: var(--transition);
     text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.feature-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: linear-gradient(45deg, transparent, rgba(220, 20, 60, 0.1), transparent);
+    transform: rotate(45deg);
+    animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+    0% {
+        transform: translateX(-100%) translateY(-100%) rotate(45deg);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%) rotate(45deg);
+    }
 }
 
 .feature-card:hover {
@@ -855,6 +1162,26 @@ section {
     justify-content: center;
     font-size: 2rem;
     color: white;
+    transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+    box-shadow: 0 5px 15px rgba(220, 20, 60, 0.3);
+}
+
+.feature-card:hover .feature-icon {
+    transform: scale(1.1) rotate(5deg);
+    box-shadow: 0 10px 30px rgba(220, 20, 60, 0.6);
+}
+
+.feature-icon i {
+    animation: icon-float 3s ease-in-out infinite;
+}
+
+@keyframes icon-float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-5px);
+    }
 }
 
 .feature-card h3 {
