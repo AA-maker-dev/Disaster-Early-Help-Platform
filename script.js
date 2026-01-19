@@ -508,6 +508,57 @@ document.querySelectorAll('.feature-card').forEach(card => {
 });
 
 // ==========================================
+// Advanced Multi-Layer Parallax System
+// ==========================================
+
+const parallaxLayers = document.querySelectorAll('.parallax-layer');
+const decorativeElements = document.querySelectorAll('.deco-circle, .geo-shape, .gradient-orb, .float-shape');
+
+const advancedParallax = throttle(() => {
+    const scrolled = window.pageYOffset;
+    
+    // Multi-layer parallax with different speeds
+    parallaxLayers.forEach(layer => {
+        const speed = layer.dataset.speed || 0.5;
+        const yPos = -(scrolled * speed);
+        layer.style.transform = `translate3d(0, ${yPos}px, 0)`;
+    });
+    
+    // Decorative elements parallax
+    decorativeElements.forEach((element, index) => {
+        const speed = 0.1 + (index * 0.05);
+        const yPos = scrolled * speed;
+        element.style.transform = `translate3d(0, ${yPos}px, 0)`;
+    });
+}, 50);
+
+window.addEventListener('scroll', advancedParallax);
+
+// ==========================================
+// 3D Depth Scrolling Effect
+// ==========================================
+
+const depth3DScroll = throttle(() => {
+    const sections = document.querySelectorAll('section');
+    
+    sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        const scrollPercent = 1 - (rect.top / window.innerHeight);
+        
+        if (scrollPercent > 0 && scrollPercent < 2) {
+            const depth = Math.max(0, Math.min(1, scrollPercent));
+            const scale = 0.95 + (depth * 0.05);
+            const opacity = 0.3 + (depth * 0.7);
+            
+            section.style.transform = `scale(${scale}) translateZ(${depth * 20}px)`;
+            section.style.opacity = opacity;
+        }
+    });
+}, 50);
+
+window.addEventListener('scroll', depth3DScroll);
+
+// ==========================================
 // Scroll Animations & Parallax Effects (Optimized)
 // ==========================================
 
@@ -583,10 +634,21 @@ window.addEventListener('scroll', () => {
     scaleOnScroll();
 });
 
-// Trigger on page load
+// Initialize on page load
 window.addEventListener('load', () => {
     revealElements();
     scaleOnScroll();
+    advancedParallax();
+    depth3DScroll();
+    
+    // Animate decorative elements on load
+    setTimeout(() => {
+        document.querySelectorAll('.deco-circle, .gradient-orb, .float-shape').forEach((el, i) => {
+            setTimeout(() => {
+                el.style.opacity = '1';
+            }, i * 200);
+        });
+    }, 500);
 });
 
 // Add smooth parallax to map pins
