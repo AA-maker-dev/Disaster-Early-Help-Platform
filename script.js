@@ -222,6 +222,194 @@ document.querySelectorAll('.stat-number').forEach(stat => {
 });
 
 // ==========================================
+// Footer Functionality - Modals
+// ==========================================
+
+// Modal management
+const modals = {
+    docs: document.getElementById('docs-modal'),
+    api: document.getElementById('api-modal'),
+    support: document.getElementById('support-modal'),
+    contact: document.getElementById('contact-modal')
+};
+
+// Open modal function
+function openModal(modalId) {
+    const modal = modals[modalId];
+    if (modal) {
+        modal.classList.add('active');
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+// Close modal function
+function closeModal(modal) {
+    modal.classList.remove('active');
+    document.body.style.overflow = 'auto';
+}
+
+// Event listeners for footer links
+document.getElementById('docs-link')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openModal('docs');
+});
+
+document.getElementById('api-link')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openModal('api');
+});
+
+document.getElementById('support-link')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openModal('support');
+});
+
+document.getElementById('contact-link')?.addEventListener('click', (e) => {
+    e.preventDefault();
+    openModal('contact');
+});
+
+// Close modal when clicking X or outside
+Object.values(modals).forEach(modal => {
+    if (modal) {
+        // Close button
+        const closeBtn = modal.querySelector('.modal-close');
+        closeBtn?.addEventListener('click', () => closeModal(modal));
+        
+        // Click outside modal
+        modal.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                closeModal(modal);
+            }
+        });
+    }
+});
+
+// Close modal with ESC key
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        Object.values(modals).forEach(modal => {
+            if (modal && modal.classList.contains('active')) {
+                closeModal(modal);
+            }
+        });
+    }
+});
+
+// ==========================================
+// Newsletter Form
+// ==========================================
+
+const newsletterForm = document.getElementById('newsletter-form');
+const newsletterEmail = document.getElementById('newsletter-email');
+
+if (newsletterForm) {
+    newsletterForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const email = newsletterEmail.value;
+        
+        if (email) {
+            // Simulate newsletter subscription
+            showNotification('✅ Subscribed! You\'ll receive emergency updates at ' + email, 'success');
+            newsletterEmail.value = '';
+            
+            // Animation effect
+            newsletterForm.style.transform = 'scale(0.95)';
+            setTimeout(() => {
+                newsletterForm.style.transform = 'scale(1)';
+            }, 200);
+        }
+    });
+}
+
+// ==========================================
+// Contact Form
+// ==========================================
+
+const contactForm = document.getElementById('contact-form');
+
+if (contactForm) {
+    contactForm.addEventListener('submit', (e) => {
+        e.preventDefault();
+        
+        const name = document.getElementById('contact-name').value;
+        const email = document.getElementById('contact-email').value;
+        const subject = document.getElementById('contact-subject').value;
+        const message = document.getElementById('contact-message').value;
+        
+        if (name && email && subject && message) {
+            // Simulate sending message
+            showNotification(`✅ Thank you ${name}! Your message has been sent. We'll respond within 24 hours.`, 'success');
+            
+            // Close modal after short delay
+            setTimeout(() => {
+                closeModal(modals.contact);
+                contactForm.reset();
+            }, 2000);
+        }
+    });
+}
+
+// ==========================================
+// API Key Request
+// ==========================================
+
+const getApiKeyBtn = document.getElementById('get-api-key');
+
+if (getApiKeyBtn) {
+    getApiKeyBtn.addEventListener('click', () => {
+        const apiKey = 'SK-' + Math.random().toString(36).substr(2, 9).toUpperCase() + 
+                       '-' + Math.random().toString(36).substr(2, 9).toUpperCase();
+        
+        showNotification(`🔑 Your API Key: ${apiKey} (Demo only - not functional)`, 'success');
+        
+        // Copy to clipboard
+        navigator.clipboard.writeText(apiKey).then(() => {
+            setTimeout(() => {
+                showNotification('📋 API Key copied to clipboard!', 'success');
+            }, 1500);
+        });
+    });
+}
+
+// ==========================================
+// Live Chat Support
+// ==========================================
+
+const startChatBtn = document.getElementById('start-chat');
+
+if (startChatBtn) {
+    startChatBtn.addEventListener('click', () => {
+        showNotification('💬 Live chat feature coming soon! Please use email or hotline for now.', 'info');
+    });
+}
+
+// ==========================================
+// Social Media Share Functions
+// ==========================================
+
+const twitterLink = document.getElementById('twitter-link');
+const linkedinLink = document.getElementById('linkedin-link');
+
+if (twitterLink) {
+    twitterLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const text = 'Check out Sentinel AI - AI-powered disaster management platform! 🚨';
+        const url = window.location.href;
+        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+    });
+}
+
+if (linkedinLink) {
+    linkedinLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        const url = window.location.href;
+        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+    });
+}
+
+// ==========================================
 // Emergency Form Handling
 // ==========================================
 
