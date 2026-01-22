@@ -1417,30 +1417,63 @@ section {
     border: 2px solid var(--border-color);
 }
 
+#liveMap {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+
 .map-overlay-text {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    text-align: center;
-    z-index: 1;
+    top: var(--spacing-md);
+    left: var(--spacing-md);
+    transform: none;
+    text-align: left;
+    z-index: 15;
+    background: rgba(15, 30, 61, 0.9);
+    backdrop-filter: blur(10px);
+    padding: var(--spacing-md);
+    border-radius: var(--radius-md);
+    border: 1px solid var(--border-color);
+    max-width: 320px;
+    pointer-events: none;
 }
 
 .map-overlay-text i {
     font-size: 4rem;
     color: var(--accent-color);
-    margin-bottom: var(--spacing-md);
+    margin-bottom: var(--spacing-sm);
     animation: pulse 2s infinite;
+    display: block;
 }
 
 .map-overlay-text h3 {
     font-size: 2rem;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-xs);
 }
 
 .map-overlay-text p {
     color: var(--text-secondary);
 }
+
+.emergency-marker {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.emergency-marker .marker-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    box-shadow: 0 0 12px currentColor;
+    border: 2px solid rgba(0, 0, 0, 0.35);
+}
+
+.marker-critical { color: var(--critical); }
+.marker-high { color: var(--high); }
+.marker-medium { color: var(--medium); }
+.marker-low { color: var(--low); }
 
 .map-pin {
     position: absolute;
