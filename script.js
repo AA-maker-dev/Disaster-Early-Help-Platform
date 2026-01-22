@@ -228,6 +228,8 @@ document.querySelectorAll('.stat-number').forEach(stat => {
 let emergencyMap;
 let emergencyBounds;
 let incidentMarkers = [];
+const liveIncidentCountEl = document.getElementById('liveIncidentCount');
+const formStatusEl = document.getElementById('formStatus');
 
 const GEO_API_ENDPOINT = 'http://localhost:8000/geocode'; // FastAPI geocoder endpoint (see docs)
 
@@ -303,6 +305,7 @@ function addIncidentMarker(incident) {
 
     incidentMarkers.push(marker);
     emergencyBounds.extend(incident.coords);
+    updateLiveIncidentCount();
 }
 
 function initEmergencyMap() {
@@ -330,6 +333,12 @@ function initEmergencyMap() {
     } else {
         emergencyMap.setView(defaultView, 2);
     }
+}
+
+function updateLiveIncidentCount() {
+    if (!liveIncidentCountEl) return;
+    const total = incidentMarkers.length;
+    liveIncidentCountEl.textContent = `Live incidents: ${total}`;
 }
 
 async function addUserIncidentToMap(formData, priorityScore) {
@@ -549,6 +558,21 @@ function delay(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
 
+function setFormStatus(state, text) {
+    if (!formStatusEl) return;
+    formStatusEl.classList.remove('pending', 'error');
+    if (state === 'pending') formStatusEl.classList.add('pending');
+    if (state === 'error') formStatusEl.classList.add('error');
+    const dot = formStatusEl.querySelector('.status-dot');
+    if (dot && state === 'pending') {
+        dot.classList.add('spin');
+    } else if (dot) {
+        dot.classList.remove('spin');
+    }
+    const label = formStatusEl.querySelector('.status-text');
+    if (label) label.textContent = text;
+}
+
 emergencyForm.addEventListener('submit', async (e) => {
     e.preventDefault();
     
@@ -564,6 +588,7 @@ emergencyForm.addEventListener('submit', async (e) => {
     // Validate required fields
     if (!formData.location || !formData.disasterType || !formData.urgency || !formData.message) {
         showNotification('Please fill in all required fields', 'error');
+        setFormStatus('error', 'Missing required fields');
         return;
     }
     
@@ -572,6 +597,7 @@ emergencyForm.addEventListener('submit', async (e) => {
     const originalText = submitBtn.innerHTML;
     submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Processing...';
     submitBtn.disabled = true;
+    setFormStatus('pending', 'Geocoding & prioritizing...');
     
     // Simulate AI processing
     await delay(1200);
@@ -588,6 +614,7 @@ emergencyForm.addEventListener('submit', async (e) => {
     // Reset button
     submitBtn.innerHTML = originalText;
     submitBtn.disabled = false;
+    setFormStatus('ready', 'Mapped successfully');
     
     // Show success notification
     showNotification('Emergency request submitted successfully!', 'success');
