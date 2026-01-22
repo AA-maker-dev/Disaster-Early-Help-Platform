@@ -233,6 +233,29 @@ const formStatusEl = document.getElementById('formStatus');
 
 const GEO_API_ENDPOINT = 'http://localhost:8000/geocode'; // FastAPI geocoder endpoint (see docs)
 
+// Simple client-side fallback that queries public Nominatim when backend is unavailable
+async function clientGeocodeFallback(locationText) {
+    try {
+        const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(locationText)}`;
+        const res = await fetch(url, {
+            headers: {
+                'Accept-Language': 'en'
+            }
+        });
+        if (!res.ok) throw new Error('Client geocode failed');
+        const results = await res.json();
+        if (Array.isArray(results) && results[0]?.lat && results[0]?.lon) {
+            return {
+                coords: [parseFloat(results[0].lat), parseFloat(results[0].lon)],
+                resolvedName: results[0].display_name
+            };
+        }
+    } catch (err) {
+        console.warn('Public Nominatim fallback failed:', err?.message || err);
+    }
+    return null;
+}
+
 // Seed data to pre-populate the map
 const baseIncidents = [
     { title: 'Wildfire | Los Angeles, United States', coords: [34.0522, -118.2437], level: 'critical', status: 'Active response' },
@@ -270,6 +293,9 @@ async function geocodeLocation(locationText) {
     } catch (err) {
         console.warn('Geocode fallback:', err?.message || err);
     }
+    // Try client-side public Nominatim before resorting to pseudo coords
+    const nominatimGeo = await clientGeocodeFallback(locationText);
+    if (nominatimGeo) return nominatimGeo;
     return null;
 }
 
