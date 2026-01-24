@@ -230,6 +230,7 @@ let emergencyBounds;
 let incidentMarkers = [];
 const liveIncidentCountEl = document.getElementById('liveIncidentCount');
 const formStatusEl = document.getElementById('formStatus');
+const STORAGE_KEY = 'disasterPlatformIncidents';
 
 const GEO_API_ENDPOINT = 'http://localhost:8000/geocode'; // FastAPI geocoder endpoint (see docs)
 
@@ -334,6 +335,58 @@ function addIncidentMarker(incident) {
     updateLiveIncidentCount();
 }
 
+// ==========================================
+// Local Storage Functions
+// ==========================================
+
+function saveIncidentsToStorage(incidents) {
+    try {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(incidents));
+        console.log('✓ Incidents saved to local storage');
+    } catch (err) {
+        console.warn('⚠ Failed to save incidents to storage:', err);
+    }
+}
+
+function loadIncidentsFromStorage() {
+    try {
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (stored) {
+            const incidents = JSON.parse(stored);
+            console.log('✓ Loaded incidents from local storage:', incidents.length, 'items');
+            return incidents;
+        }
+    } catch (err) {
+        console.warn('⚠ Failed to load incidents from storage:', err);
+    }
+    return [];
+}
+
+function clearIncidentsStorage() {
+    try {
+        localStorage.removeItem(STORAGE_KEY);
+        console.log('✓ Incidents cleared from local storage');
+    } catch (err) {
+        console.warn('⚠ Failed to clear storage:', err);
+    }
+}
+
+function getStoredIncidents() {
+    const baseIncidentsData = baseIncidents.map(inc => ({
+        title: inc.title,
+        coords: inc.coords,
+        level: inc.level,
+        status: inc.status,
+        isBase: true
+    }));
+    const storedIncidents = loadIncidentsFromStorage();
+    // Filter out base incidents that are already in the list to avoid duplicates
+    const userIncidents = storedIncidents.filter(stored => 
+        !baseIncidentsData.some(base => JSON.stringify(base) === JSON.stringify(stored))
+    );
+    return [...baseIncidentsData, ...userIncidents];
+}
+
 function initEmergencyMap() {
     const mapElement = document.getElementById('liveMap');
     if (!mapElement || typeof L === 'undefined') return;
@@ -352,7 +405,9 @@ function initEmergencyMap() {
 
     emergencyBounds = L.latLngBounds();
 
-    baseIncidents.forEach(addIncidentMarker);
+    // Load incidents from storage (base incidents + user-added incidents)
+    const allIncidents = getStoredIncidents();
+    allIncidents.forEach(addIncidentMarker);
 
     if (emergencyBounds.isValid()) {
         emergencyMap.fitBounds(emergencyBounds, { padding: [32, 32] });
@@ -377,6 +432,11 @@ async function addUserIncidentToMap(formData, priorityScore) {
 
     const incident = { title, coords, level, status };
     addIncidentMarker(incident);
+
+    // Save the new incident to local storage
+    const storedIncidents = loadIncidentsFromStorage();
+    storedIncidents.push(incident);
+    saveIncidentsToStorage(storedIncidents);
 
     if (emergencyBounds.isValid()) {
         emergencyMap.fitBounds(emergencyBounds, { padding: [32, 32] });
